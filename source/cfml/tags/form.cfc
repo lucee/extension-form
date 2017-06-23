@@ -1,4 +1,4 @@
-component{
+component {
 	this.metadata.attributetype="fixed";
 	this.metadata.hint="Builds a form with CFML custom control tags that provide more functionality than standard HTML form input elements (XML and Flash type not supported).";
 
@@ -16,21 +16,19 @@ component{
 	this.WMODE_WINDOW = 0;
 	this.WMODE_TRANSPARENT = 1;
 	this.WMODE_OPAQUE = 2;
+	this.inputs = [];
 	this.nl = chr(10) & chr(13);
 
 	/**
 	* invoked after tag is constructed
 	* @parent the parent cfc custom tag, if there is one
 	* */
-
 	public function init(required boolean hasEndTag, component parent) {
 		variables.hasEndTag = arguments.hasEndTag;
-		setOptionVars();
-	};
+		// setOptionVars();
+	}
 
 	public boolean function onStartTag( struct attributes, struct caller ){
-		writeDump("From Start");
-		writeDump(arguments);
 		contextPath = getPageContext().getHttpServletRequest().getContextPath();
 		if(isNull(contextPath))
 			contextPath = "";
@@ -93,33 +91,30 @@ component{
 
 		result &= ">";
 
-		// writeDump(result);abort;
 		getPageContext().forceWrite(result);
 
 		return variables.hasEndTag;
 	}
 
 	public boolean function onEndTag( struct attributes, struct caller, string generatedContent ){
-		// writeDump("From End");
-		// writeDump(arguments);
+		getPageContext().forceWrite(generatedContent);
 		return false;
 	}
 
 	// Private functions
-	private void function setOptionVars(){
-		variables.stOptions = {
-			action: "",
-			method: "get"
-		};
-	}
+	// private void function setOptionVars(){
+	// 	variables.stOptions = {
+	// 		action: "",
+	// 		method: "get"
+	// 	};
+	// }
 
-	private void function setDefaultValues(struct attributes){
-		if (!structKeyExists(arguments.attributes, "action")) {
-			arguments.attributes.action = "";
-		};
-		if (!structKeyExists(arguments.attributes, "method")) {
-			arguments.attributes.method = "get";
-		};
-	}
-
+	// private void function setDefaultValues(struct attributes){
+	// 	if (!structKeyExists(arguments.attributes, "action")) {
+	// 		arguments.attributes.action = "";
+	// 	};
+	// 	if (!structKeyExists(arguments.attributes, "method")) {
+	// 		arguments.attributes.method = "get";
+	// 	};
+	// }
 }
