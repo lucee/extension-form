@@ -8,6 +8,8 @@ component {
 	this.passthrough=nullValue();
 	this.nl = chr(10) & chr(13);
 
+	this.attributes = {};
+
 	/**
 	* invoked after tag is constructed
 	* @parent the parent cfc custom tag, if there is one
@@ -18,6 +20,9 @@ component {
 	}
 
 	public boolean function onStartTag( struct attributes, struct caller ){
+		this.attributes = attributes;
+		// Make query attribute to receive only query name
+		attributes.query = caller[attributes.query];
 		if(!isNull(attributes.query)) {
 			local.qMeta = getMetaData(attributes.query);
 			local.colList = "";
@@ -33,15 +38,15 @@ component {
 			if(!isNull(attributes.group) && !listFindNoCase(colList, attributes.group))
 				throw "invalid value for attribute [group], there is no column in query with name [" & attributes.group & "]";
 
-			if(structKeyExists(variables, "parent") && isInstanceOf(variables.parent, "form")){
+			if(structKeyExists(variables, "parent") && isInstanceOf(parent, "form")){
 				tagDetails = {};
 				structAppend(tagDetails, attributes, true);
-				arrayAppend(variables.parent.inputs,tagDetails);
+				arrayAppend(parent.inputs,tagDetails);
 			}else{
 				throw "Tag cfselect must be inside a cfform tag";
 			}
 
-			structAppend(attributes, setAttributeDefaults(attributes), true);
+			setAttributeDefaults();
 
 			result = "";
 			result &= "<select";
@@ -75,8 +80,9 @@ component {
 	}
 
 	// Private functions
-	private string function processQueryData(struct attributes){
+	private string function processQueryData(){
 		local.res = "";
+		local.attributes = duplicate(this.attributes);
 		// write query options
 		if(!isNull(attributes.query)){
 			rowCount = attributes.query.recordCount;
@@ -103,7 +109,8 @@ component {
 		return local.res;
 	}
 
-	private struct function setAttributeDefaults(struct attributes){
+	private void function setAttributeDefaults(){
+		local.attributes = duplicate(this.attributes);
 		if(isNull(attributes.queryPosition))
 			attributes.queryPosition = "above";
 		if(isNull(attributes.selected))
@@ -111,7 +118,7 @@ component {
 		if(isNull(attributes.caseSensitive))
 			attributes.caseSensitive = false;
 
-		return attributes;
+		structAppend(this.attributes, local.attributes, true);
 	}
 
 	private string function selected(string str, string sel, boolean caseSensitive) {

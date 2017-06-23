@@ -17,6 +17,7 @@ component {
 	this.WMODE_TRANSPARENT = 1;
 	this.WMODE_OPAQUE = 2;
 	this.inputs = [];
+	this.attributes = {};
 	this.nl = chr(10) & chr(13);
 
 	/**
@@ -29,6 +30,7 @@ component {
 	}
 
 	public boolean function onStartTag( struct attributes, struct caller ){
+		this.attributes = attributes;
 		contextPath = getPageContext().getHttpServletRequest().getContextPath();
 		if(isNull(contextPath))
 			contextPath = "";
