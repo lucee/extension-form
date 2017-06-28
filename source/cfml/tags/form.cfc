@@ -5,17 +5,19 @@ component {
 	this.metadata.attributes={
 		name: "",
 		action: "",
-		method: "get"
+		method: "get",
+		format: "html",
+		onmouseover: ""
 	};
 
-	this.FORMAT_HTML = 0;
-    this.FORMAT_FLASH = 1;
-    this.FORMAT_XML = 2;
+	this.FORMAT_HTML = "html";
+    this.FORMAT_FLASH = "flash";
+    this.FORMAT_XML = "xml";
 	this.DEFAULT_ARCHIVE = "/lucee/formtag-applet.cfm";
 	this.DEFAULT_FORM = "/lucee/formtag-form.cfm";
-	this.WMODE_WINDOW = 0;
-	this.WMODE_TRANSPARENT = 1;
-	this.WMODE_OPAQUE = 2;
+	this.WMODE_WINDOW = "window";
+	this.WMODE_TRANSPARENT = "transparent";
+	this.WMODE_OPAQUE = "opaque";
 	this.inputs = [];
 	this.attributes = {};
 	this.nl = chr(10) & chr(13);
@@ -26,11 +28,13 @@ component {
 	* */
 	public function init(required boolean hasEndTag, component parent) {
 		variables.hasEndTag = arguments.hasEndTag;
-		// setOptionVars();
 	}
 
 	public boolean function onStartTag( struct attributes, struct caller ){
 		this.attributes = attributes;
+		setAttributeDefaults();
+		checkAttributes();
+
 		contextPath = getPageContext().getHttpServletRequest().getContextPath();
 		if(isNull(contextPath))
 			contextPath = "";
@@ -48,12 +52,11 @@ component {
 		suffix = len(attributes.name)?"" & count:attributes.name;
 
 		funcName="lucee_form_" & count;
-		
+
 		checkName="_CF_check" & suffix;
 		resetName="_CF_reset" & suffix;
 		loadName="_CF_load" & suffix;
 
-		//boolean hasListener=false;
 		if(isNull(attributes.onsubmit))
 			attributes.onsubmit = "return " & funcName & ".check();";
 		else
@@ -104,19 +107,39 @@ component {
 	}
 
 	// Private functions
-	// private void function setOptionVars(){
-	// 	variables.stOptions = {
-	// 		action: "",
-	// 		method: "get"
-	// 	};
-	// }
+	private void function checkAttributes(){
+		if(!"xml,html,flash".findNoCase(this.attributes.format))
+			throw "invalid value [" & this.attributes.format & "] for attribute format, for this attribute only the following values are supported " & "[xml, html, flash]";
+		else if(lcase(this.attributes.format)!=this.FORMAT_HTML)
+			throw "format [" & this.attributes.format & "] is not supported, only the following formats are supported [html]";
 
-	// private void function setDefaultValues(struct attributes){
-	// 	if (!structKeyExists(arguments.attributes, "action")) {
-	// 		arguments.attributes.action = "";
-	// 	};
-	// 	if (!structKeyExists(arguments.attributes, "method")) {
-	// 		arguments.attributes.method = "get";
-	// 	};
-	// }
+		if( len(this.attributes.name) && reFindNoCase("[^a-zA-Z0-9-_:.]+", this.attributes.name) )
+			throw "value of attribute name [" & this.attributes.name & "] is invalid, only the following characters are allowed [a-z,A-Z,0-9,-,_,:,.]";
+
+		if(!isNull(this.attributes.preserveData))
+			throw "attribute preserveData for tag form is not supported at the moment";
+
+		if(!"window,transparent,opaque".findNoCase(this.attributes.wmode))
+			throw "invalid value [" & this.attributes.wmode & "] for attribute wmode, for this attribute only the following values are supported " & "[window, transparent, opaque]";
+	}
+
+	private void function setAttributeDefaults(){
+		local.attributes = duplicate(this.attributes);
+		if(isNull(attributes.action))
+			attributes.action = "";
+		if(isNull(attributes.method))
+			attributes.method = "get";
+		if(isNull(attributes.format))
+			attributes.format = "html";
+		if(isNull(attributes.name))
+			attributes.name = "";
+		if(isNull(attributes.wmode))
+			attributes.wmode = "window";
+
+		structAppend(this.attributes, local.attributes, true);
+	}
+
+	package void function setInput(input inp){
+		arrayAppend(this.inputs,inp);
+	}
 }
