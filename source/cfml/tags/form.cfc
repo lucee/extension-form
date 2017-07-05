@@ -135,6 +135,9 @@ component {
 			attributes.name = "";
 		if(isNull(attributes.wmode))
 			attributes.wmode = "window";
+		if(isNull(attributes.FORMAT_FLASH))
+			attributes.FORMAT_FLASH = "flash";
+		
 
 		structAppend(this.attributes, local.attributes, true);
 	}

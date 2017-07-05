@@ -10,10 +10,6 @@ component {
 
 	this.attributes = {};
 
-	/**
-	* invoked after tag is constructed
-	* @parent the parent cfc custom tag, if there is one
-	* */
 	public function init(required boolean hasEndTag, component parent) {
 		variables.hasEndTag = arguments.hasEndTag;
 		variables.parent = arguments.parent;
@@ -21,7 +17,6 @@ component {
 
 	public boolean function onStartTag( struct attributes, struct caller ){
 		this.attributes = attributes;
-		// Make query attribute to receive only query name
 		attributes.query = caller[attributes.query];
 		if(!isNull(attributes.query)) {
 			local.qMeta = getMetaData(attributes.query);
@@ -46,6 +41,7 @@ component {
 				throw "Tag cfselect must be inside a cfform tag";
 			}
 
+			checkAttributes();
 			setAttributeDefaults();
 
 			result = "";
@@ -111,7 +107,7 @@ component {
 
 	private void function setAttributeDefaults(){
 		local.attributes = duplicate(this.attributes);
-		if(isNull(attributes.queryPosition))
+		if(isNull(attributes.queryPosition) || !len(attributes. queryPosition))
 			attributes.queryPosition = "above";
 		if(isNull(attributes.selected))
 			attributes.selected = "";
@@ -120,6 +116,32 @@ component {
 
 		structAppend(this.attributes, local.attributes, true);
 	}
+
+
+	private void function checkAttributes(){
+        variables.attributesList = "class,style,id,multiple,name,size,tabindex,title,dir,lang,onblur,onchange,onclick,ondblclick,onmousedown,onmouseup,onmouseover,onmousemove,onmouseout,onkeypress,onkeydown,onkeyup,onfocus,message,onerror,required,passthrough,query,display,dataformatas,datafld,datasrc,disabled,disabled,selected,value,group,height,label,queryposition,tooltip,visible,width,enabled,casesensitive";
+
+        if( len(this.attributes.name) && reFindNoCase("[^a-zA-Z0-9-_:.]+", this.attributes.name) )
+        throw "value of attribute name [" & this.attributes.name & "] is invalid, only the following characters are allowed [a-z,A-Z,0-9,-,_,:,.]";
+
+        for(attr in this.attributes){
+            if(!listFindNoCase(attributesList, attr)){
+                throw "invalid #attr# for cfselect tag";
+            }
+            if(listFindNoCase("required,disabled,editable,visible,caseSensitive", attr)){
+                if(!isBoolean(this.attributes[attr]) && len(this.attributes[attr]))
+					throw "value of attribute #attr# must be boolean";
+            }else if(listFindNoCase("size,height,width", attr)){
+                if(!isnumeric(this.attributes[attr]))
+                    throw "value of attribute #attr# must be numeric";
+            }
+        }
+        if(structKeyExists(this.attributes, "queryPosition") && len(this.attributes.queryPosition))
+            if(!listFindNoCase("above,below", this.attributes.queryPosition)){
+                throw "attribute queryPosition for tag select has an invalid value #this.attributes.queryPosition#,
+				valid values are [above, below]";
+        }
+    }
 
 	private string function selected(string str, string sel, boolean caseSensitive) {
 		if(!isNull(sel)) {
