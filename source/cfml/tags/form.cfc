@@ -11,8 +11,8 @@ component {
 	};
 
 	this.FORMAT_HTML = "html";
-    this.FORMAT_FLASH = "flash";
-    this.FORMAT_XML = "xml";
+	this.FORMAT_FLASH = "flash";
+	this.FORMAT_XML = "xml";
 	this.DEFAULT_ARCHIVE = "/lucee/formtag-applet.cfm";
 	this.DEFAULT_FORM = "/lucee/formtag-form.cfm";
 	this.WMODE_WINDOW = "window";
@@ -70,7 +70,7 @@ component {
 
 		if(isNull(attributes.scriptSrc))
 			attributes.scriptSrc = contextPath & this.DEFAULT_FORM;
-		
+
 		result = "";
 		result &= "<script language=""JavaScript"" type=""text/javascript"" src=""#attributes.scriptSrc#""></script>#this.nl#";
 		result &= "<script language = ""JavaScript"" type=""text/javascript"">#this.nl#";
@@ -92,7 +92,7 @@ component {
 			result &= " #attr#=""#attributes[attr]#""";
 
 		if(!isNull(attributes.passthrough))
-            result &= " #passthrough#";
+			result &= " #passthrough#";
 
 		result &= ">";
 

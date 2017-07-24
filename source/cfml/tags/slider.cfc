@@ -23,7 +23,6 @@ component {
 	public boolean function onStartTag( struct attributes, struct caller ){
 		this.attributes = attributes;
 
-		// writeDump(variables.parent);
 		if(structisEmpty(attributes) || !structKeyExists(attributes, "name") || attributes.name == "") {
 			throw "attribute Name is required for slider tag";
 		}
@@ -50,9 +49,10 @@ component {
 			if(listFindNoCase(paramList, param))
 			result &= '<param name="#param#" value="#this.attributes[param]#"></param>';
 		}
-		result &= '</applet>'
-		writeDump(result);
+		result &= '</applet>';
 		getPageContext().forceWrite(result);
+
+		return variables.hasEndTag;
 	}
 
 
@@ -60,21 +60,21 @@ component {
 		local.attributes = duplicate(this.attributes);
 		if(isNull(attributes.width) || !len(attributes.width))
 			attributes.width = 40;
-        for(attr in attributesList){
-        	if(listFindNoCase("italic,refreshlabel,vertical,ticketMarkMinor,bold", attr)){
-        		if(isNull(attributes[attr]) || !len(attributes[attr])){
-        			attributes[attr] = false;
-        		}
-        	}else if(listFindNoCase("vspace,width,hspace,value,scale,fontsize,height", attr)){
+		for(attr in attributesList){
+			if(listFindNoCase("italic,refreshlabel,vertical,ticketMarkMinor,bold", attr)){
 				if(isNull(attributes[attr]) || !len(attributes[attr])){
-        			attributes[attr] = 0;
-        		}
+					attributes[attr] = false;
+				}
+			}else if(listFindNoCase("vspace,width,hspace,value,scale,fontsize,height", attr)){
+				if(isNull(attributes[attr]) || !len(attributes[attr])){
+					attributes[attr] = 0;
+				}
 			}else if(listFindNoCase("textcolor,message,notsupported,align,lookandfeel,onvalidate,label,font,tickmarkimages, onError,bgcolor,tickmarklabels,range", attr)){
 				if(isNull(attributes[attr])){
-        			attributes[attr] = "";
-        		}
-        	}
-        }
+					attributes[attr] = "";
+				}
+			}
+		}
 		structAppend(this.attributes, local.attributes, true);
 	}
 
@@ -98,9 +98,9 @@ component {
 
 		if(attr== "range" && len(this.attributes.range)){
 			rangeMatch = REMatch("^[0-9]*(\,([0-9])*)*$", this.attributes.range);
-           	if(!arrayLen(rangeMatch)){
-          		throw "attribute range has an invalid value [" & attributes.range & "], must be string list with numbers, Example: [number_from,number_to], [number_from], [number_from,], [,number_to]";
-           	}
+			if(!arrayLen(rangeMatch)){
+				throw "attribute range has an invalid value [" & attributes.range & "], must be string list with numbers, Example: [number_from,number_to], [number_from], [number_from,], [,number_to]";
+			}
 
 			range = this.attributes.range;
 			arr = listToArray(range, "");
@@ -117,9 +117,9 @@ component {
 				this.attributes.minimum = listFirst(range);
 				this.attributes.maximum = listLast(range);
 			}
-   		}
+		}
 
-   		if(attr=="align" && len(this.attributes.align)){
+		if(attr=="align" && len(this.attributes.align)){
 			if(!listFindNoCase("top,left,bottom,baseline,texttop,absbottom,middle,absmiddle,right", this.attributes.align)){
 				throw "value of attribute align #this.attributes.align# is invalid. valid alignments are [top,left,bottom,baseline,texttop,absbottom,middle,absmiddle,right]";
 			}
