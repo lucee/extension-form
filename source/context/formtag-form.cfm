@@ -507,6 +507,7 @@ function LuceeForms(form,onError) {
 	* @param value value from input field
 	*/
 	prv.validateEmail=function(el,value) { 
+		value=value.toLowerCase();
         var pattern=/^((([a-z]|[0-9]|!|#|$|%|&|'|\*|\+|\-|\/|=|\?|\^|_|`|\{|\||\}|~)+(\.([a-z]|[0-9]|!|#|$|%|&|'|\*|\+|\-|\/|=|\?|\^|_|`|\{|\||\}|~)+)*)@((((([a-z]|[0-9])([a-z]|[0-9]|\-){0,61}([a-z]|[0-9])\.))*([a-z]|[0-9])([a-z]|[0-9]|\-){0,61}([a-z]|[0-9])\.)[\w]{2,4}|(((([0-9]){1,3}\.){3}([0-9]){1,3}))|(\[((([0-9]){1,3}\.){3}([0-9]){1,3})\])))$/; 
         if(!pattern.test(value))	{
 			if(el.message && el.message.length>0)prv.addError(el,el.message);
