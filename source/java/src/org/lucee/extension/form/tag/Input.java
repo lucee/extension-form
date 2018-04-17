@@ -419,7 +419,7 @@ public class Input extends TagImpl {
      */
     public void setDaynames(String listDaynames) throws PageException {
     	String[] arr = engine.getListUtil().toStringArray(listDaynames, ",");
-    	if(arr.length==7)
+    	if(arr.length!=7)
     		throw engine.getExceptionUtil().createApplicationException("value of attribute [daynames] must contain a string list with 7 values, now there are "+arr.length+" values");
     	this.daynames=arr;
     }
@@ -716,7 +716,7 @@ public class Input extends TagImpl {
 	 */
 	public void setValidateat(String validateAt) throws PageException {
 		this.validateAt = validateAt;
-		throw engine.getExceptionUtil().createApplicationException("attribute validateAt is not supportrd for tag input ");
+		throw engine.getExceptionUtil().createApplicationException("attribute validateAt is not supported for tag input ");
 
 	}
 
