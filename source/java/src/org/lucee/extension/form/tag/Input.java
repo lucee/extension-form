@@ -262,7 +262,7 @@ public class Input extends TagImpl {
 
     public void setDisabled(String disabled) {
     	// alles ausser false ist true
-    	//if(engine.getCastUtil().toBooleanValue(disabled,true)) 
+    	if(engine.getCastUtil().toBooleanValue(disabled,true)) 
     		attributes.setEL("disabled",disabled);
     }
 
