@@ -1,4 +1,4 @@
-<cfcontent type="text/javascript"><cfsetting showdebugoutput="no">
+<cfcontent type="text/javascript"><cfheader name="Expires" value="#getHttpTimeString( now() + 0.1 )#"><cfsetting showdebugoutput="no">
 /**
 * represent a cfform 
 */
