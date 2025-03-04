@@ -18,43 +18,35 @@
  **/
 package org.lucee.extension.form.tag;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.BodyContent;
-import javax.servlet.jsp.tagext.BodyTag;
-import javax.servlet.jsp.tagext.Tag;
-
-import lucee.loader.engine.CFMLEngine;
-import lucee.loader.engine.CFMLEngineFactory;
-import lucee.loader.util.Util;
-import lucee.runtime.PageContext;
-import lucee.runtime.exp.PageException;
+import jakarta.servlet.jsp.JspException;
+import jakarta.servlet.jsp.tagext.BodyContent;
+import jakarta.servlet.jsp.tagext.BodyTag;
 
 /**
  * Implementation of the Tag
  */
 public abstract class BodyTagImpl extends TagImpl implements BodyTag {
 
-	protected BodyContent bodyContent=null;
-	
+	protected BodyContent bodyContent = null;
 
 	@Override
 	public void setBodyContent(BodyContent bodyContent) {
-		this.bodyContent=bodyContent;
+		this.bodyContent = bodyContent;
 	}
 
 	@Override
 	public void doInitBody() throws JspException {
-		
+
 	}
 
 	@Override
 	public int doAfterBody() throws JspException {
 		return SKIP_BODY;
 	}
-	 
+
 	@Override
 	public void release() {
 		super.release();
-		bodyContent=null;
-	}    	
+		bodyContent = null;
+	}
 }
