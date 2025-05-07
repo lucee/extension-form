@@ -146,8 +146,8 @@ public final class Form extends BodyTagImpl {
 		else throw engine.getExceptionUtil().createApplicationException("invalid value ["+strFormat+"] for attribute format, for this attribute only the following values are supported " +
 				"[xml, html, flash]");
 	
-		if(format!=FORMAT_HTML)
-			throw engine.getExceptionUtil().createApplicationException("format ["+strFormat+"] is not supported, only the following formats are supported [html]");
+		// if(format!=FORMAT_HTML)
+			// throw engine.getExceptionUtil().createApplicationException("format ["+strFormat+"] is not supported, only the following formats are supported [html]");
 		// TODO support other formats
 	}
 	
