@@ -146,7 +146,7 @@ start-bundles: false
         <exclude name="**/javax.*"/>
         <exclude name="**/jakarta.*"/>
         <exclude name="**/jsp-*"/>
-        <exclude name="**/lucee.jar"/>
+        <exclude name="**/lucee*.jar"/>
         <exclude name="**/org.apache.felix.framework-*"/>
       </fileset>
     </copy>
