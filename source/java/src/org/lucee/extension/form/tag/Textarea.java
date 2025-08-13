@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.BodyContent;
 import jakarta.servlet.jsp.tagext.BodyTag;
 import lucee.loader.util.Util;
@@ -202,11 +201,11 @@ public final class Textarea extends Input implements BodyTag {
 	}
 
 	@Override
-	public void doInitBody() throws JspException {
+	public void doInitBody() throws PageException {
 	}
 
 	@Override
-	public int doAfterBody() throws JspException {
+	public int doAfterBody() throws PageException {
 		return SKIP_BODY;
 	}
 
