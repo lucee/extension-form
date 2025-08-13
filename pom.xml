@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <id>0A706D4C-62F5-40FF-898F57E4607CA704</id>
+        <id>FAD67145-E3AE-30F8-1C11A6CCF544F0B7</id>
         <bundlename>org.lucee.form.extension</bundlename>
         <luceeCoreVersion>7.0.0.110</luceeCoreVersion>
         <releaseType>server</releaseType>
