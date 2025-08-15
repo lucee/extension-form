@@ -5,8 +5,6 @@
     </description>
     <!-- set global properties for this build -->
   
-  <property file="build.properties"/>
-
   <property name="lib" location="source/java/libs"/>
   <property name="src" location="source/java/src"/>
   <property name="srcImg" location="source/images"/>
@@ -18,10 +16,6 @@
   <property name="tld" location="source/tld"/>
   <property name="fld" location="source/fld"/>
   
-
-  
-  <buildnumber file="build.number"/>
-
   <path id="classpath">
     <fileset dir="${lib}">
       <include name="**/*.jar" />
