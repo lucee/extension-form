@@ -19,7 +19,8 @@
 	<!-- Form -->
 	<tag>
 		<name>form</name>
-		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.Form</tag-class>
+		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.jakarta.Form</tag-class>
+		<javax-tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.javax.Form</javax-tag-class>
 		<allow-removing-literal>yes</allow-removing-literal>
 		<body-content>must</body-content>
 		<body-rtexprvalue>false</body-rtexprvalue>
@@ -369,7 +370,8 @@
 	<!-- Input -->
 	<tag>
 		<name>input</name>
-		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.Input</tag-class>
+		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.jakarta.Input</tag-class>
+		<javax-tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.javax.Input</javax-tag-class>
 		<body-content>empty</body-content>
 		<body-rtexprvalue>false</body-rtexprvalue>
 		<description>Used inside cfform to place radio buttons, checkboxes, or text boxes. Provides input
@@ -1103,7 +1105,8 @@ Valid only for cfinput type="text".</description>
 	<!-- Select -->
 	<tag>
 		<name>Select</name>
-		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.Select</tag-class>
+		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.jakarta.Select</tag-class>
+		<javax-tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.javax.Select</javax-tag-class>
 		<body-content>must</body-content>
 		<body-rtexprvalue>false</body-rtexprvalue>
 		<description>Used inside cfform, cfselect lets you construct a drop-down list box form control. You can
@@ -1471,7 +1474,8 @@ Valid only for cfinput type="text".</description>
 	<!-- Slider -->
 	<tag>
 		<name>Slider</name>
-		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.Slider</tag-class>
+		<tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.jakarta.Slider</tag-class>
+		<javax-tag-class bundle-name="{bundle-name}" bundle-version="{bundle-version}">org.lucee.extension.form.tag.javax.Slider</javax-tag-class>
 		<body-content>empty</body-content>
 		<body-rtexprvalue>false</body-rtexprvalue>
 		<description>Used inside cfform, cfslider lets you place a slider control in a CFML form. A slider

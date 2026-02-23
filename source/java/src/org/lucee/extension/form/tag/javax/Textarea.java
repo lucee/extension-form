@@ -16,14 +16,15 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  * 
  **/
-package org.lucee.extension.form.tag;
+package org.lucee.extension.form.tag.javax;
 
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import jakarta.servlet.jsp.tagext.BodyContent;
-import jakarta.servlet.jsp.tagext.BodyTag;
+import javax.servlet.jsp.tagext.BodyContent;
+import javax.servlet.jsp.tagext.BodyTag;
+
 import lucee.loader.util.Util;
 import lucee.runtime.exp.PageException;
 import lucee.runtime.type.Collection.Key;
@@ -201,11 +202,10 @@ public final class Textarea extends Input implements BodyTag {
 	}
 
 	@Override
-	public void doInitBody() throws PageException {
-	}
+	public void doInitBody() {}
 
 	@Override
-	public int doAfterBody() throws PageException {
+	public int doAfterBody() {
 		return SKIP_BODY;
 	}
 

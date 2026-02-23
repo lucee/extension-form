@@ -17,7 +17,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  * 
  **/
-package org.lucee.extension.form.tag;
+package org.lucee.extension.form.tag.javax;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lucee.loader.util.Util;
 import lucee.runtime.exp.PageException;
 import lucee.runtime.ext.function.BIF;
@@ -407,13 +406,13 @@ public final class Form extends BodyTagImpl {
 	}
 
 	@Override
-	public int doStartTag() throws PageException {
+	public int doStartTag() {
 
 		try {
 			return _doStartTag();
 		}
-		catch (IOException e) {
-			throw engine.getCastUtil().toPageException(e);
+		catch (Exception e) {
+			throw engine.getExceptionUtil().createPageRuntimeException(engine.getCastUtil().toPageException(e));
 		}
 	}
 
@@ -438,7 +437,7 @@ public final class Form extends BodyTagImpl {
 		}
 		attributes.setEL("name", name);
 
-		if (action == null) action = self(pageContext.getHttpServletRequest());
+		if (action == null) action = self(pageContext);
 		attributes.setEL("action", action);
 
 		String suffix = Util.isEmpty(name) ? "" + count : engine.getCastUtil().toVariableName(name);
@@ -499,15 +498,22 @@ public final class Form extends BodyTagImpl {
 		return EVAL_BODY_INCLUDE;
 	}
 
-	private static String self(HttpServletRequest req) {
-		StringBuffer sb = new StringBuffer(req.getServletPath());
-		String qs = req.getQueryString();
-		if (!Util.isEmpty(qs)) sb.append('?').append(qs);
-		return sb.toString();
+	private static String self(Object pageContext) {
+		try {
+			Object req = pageContext.getClass().getMethod("getHttpServletRequest").invoke(pageContext);
+			String servletPath = (String) req.getClass().getMethod("getServletPath").invoke(req);
+			String qs = (String) req.getClass().getMethod("getQueryString").invoke(req);
+			StringBuffer sb = new StringBuffer(servletPath);
+			if (!Util.isEmpty(qs)) sb.append('?').append(qs);
+			return sb.toString();
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Failed to access servlet request via reflection", e);
+		}
 	}
 
 	@Override
-	public int doEndTag() throws PageException {
+	public int doEndTag() {
 		String funcName = "lucee_form_" + count;
 		try {
 			pageContext.forceWrite("</form><!-- name:" + name + " --><script>\n");
@@ -522,8 +528,8 @@ public final class Form extends BodyTagImpl {
 			}
 			pageContext.forceWrite("</script>");
 		}
-		catch (IOException e) {
-			throw engine.getCastUtil().toPageException(e);
+		catch (Exception e) {
+			throw engine.getExceptionUtil().createPageRuntimeException(engine.getCastUtil().toPageException(e));
 		}
 		return EVAL_PAGE;
 	}
