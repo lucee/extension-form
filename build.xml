@@ -132,8 +132,15 @@ start-bundles: false
     <echo message="${content3}" file="${dist}/extension/tlds/formtag.tldx"/>
 
 
-    <!-- copy the context necessary -->
+    <!-- copy the context necessary to the web contexts -->
     <copy todir="${dist}/extension/webcontexts">
+      <fileset dir="${srcContext}">
+        <include name="**/*.*"/>
+      </fileset>
+    </copy>
+    
+    <!-- copy the same as above to context -->
+    <copy todir="${dist}/extension/context">
       <fileset dir="${srcContext}">
         <include name="**/*.*"/>
       </fileset>
