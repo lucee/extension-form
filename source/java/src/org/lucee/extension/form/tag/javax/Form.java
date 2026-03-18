@@ -31,6 +31,7 @@ import lucee.runtime.ext.function.BIF;
 import lucee.runtime.type.Collection.Key;
 import lucee.runtime.type.Struct;
 import lucee.runtime.util.Cast;
+import lucee.runtime.util.ClassUtil;
 
 /**
  * implementation of the form tag
@@ -417,15 +418,17 @@ public final class Form extends BodyTagImpl {
 	}
 
 	private int _doStartTag() throws PageException, IOException {
-		String contextPath = pageContext.getHttpServletRequest().getContextPath();
+		ClassUtil classUtil = engine.getClassUtil();
+		Cast cast = engine.getCastUtil();
+		Object req = classUtil.callMethod(pageContext, cast.toKey("getHttpServletRequest"), new Object[] {});
+		String contextPath = (String) classUtil.callMethod(req, cast.toKey("getContextPath"), new Object[] {});
 		if (contextPath == null) contextPath = "";
 		if (archive == null) {
 			archive = contextPath + DEFAULT_ARCHIVE;
 		}
 
-		Cast cast = engine.getCastUtil();
 		try {
-			BIF bif = engine.getClassUtil().loadBIF(pageContext, "lucee.runtime.functions.other.CreateUniqueId");
+			BIF bif = classUtil.loadBIF(pageContext, "lucee.runtime.functions.other.CreateUniqueId");
 			count = cast.toString(bif.invoke(pageContext, new Object[] {}));
 		}
 		catch (Exception e) {
@@ -437,7 +440,7 @@ public final class Form extends BodyTagImpl {
 		}
 		attributes.setEL("name", name);
 
-		if (action == null) action = self(pageContext);
+		if (action == null) action = self(classUtil, cast, pageContext);
 		attributes.setEL("action", action);
 
 		String suffix = Util.isEmpty(name) ? "" + count : engine.getCastUtil().toVariableName(name);
@@ -498,18 +501,13 @@ public final class Form extends BodyTagImpl {
 		return EVAL_BODY_INCLUDE;
 	}
 
-	private static String self(Object pageContext) {
-		try {
-			Object req = pageContext.getClass().getMethod("getHttpServletRequest").invoke(pageContext);
-			String servletPath = (String) req.getClass().getMethod("getServletPath").invoke(req);
-			String qs = (String) req.getClass().getMethod("getQueryString").invoke(req);
-			StringBuffer sb = new StringBuffer(servletPath);
-			if (!Util.isEmpty(qs)) sb.append('?').append(qs);
-			return sb.toString();
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to access servlet request via reflection", e);
-		}
+	private static String self(ClassUtil classUtil, Cast cast, Object pageContext) throws PageException {
+		Object req = classUtil.callMethod(pageContext, cast.toKey("getHttpServletRequest"), new Object[] {});
+		String servletPath = (String) classUtil.callMethod(req, cast.toKey("getServletPath"), new Object[] {});
+		String qs = (String) classUtil.callMethod(req, cast.toKey("getQueryString"), new Object[] {});
+		StringBuffer sb = new StringBuffer(servletPath);
+		if (!Util.isEmpty(qs)) sb.append('?').append(qs);
+		return sb.toString();
 	}
 
 	@Override
