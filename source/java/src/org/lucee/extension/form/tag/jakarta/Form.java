@@ -25,12 +25,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lucee.loader.util.Util;
 import lucee.runtime.exp.PageException;
 import lucee.runtime.ext.function.BIF;
 import lucee.runtime.type.Collection.Key;
 import lucee.runtime.type.Struct;
+import jakarta.servlet.http.HttpServletRequest;
+
 import lucee.runtime.util.Cast;
 
 /**
