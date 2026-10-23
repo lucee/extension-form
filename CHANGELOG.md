@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0.8
+
+- [LDEV-6695](https://luceeserver.atlassian.net/browse/LDEV-6695) — CI: GitHub release with the .lex files for every final, ALPHA, BETA and RC build
+
 ## 2.0.0.7
 
 - [LDEV-6158](https://luceeserver.atlassian.net/browse/LDEV-6158) — fix jakarta/javax bytecode binding in `javax/Form.java`, use `eng.getClassUtil().callMethod()` reflection to avoid compile-time servlet API binding
